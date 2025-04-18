@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Patient Details</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f7f5;
+            padding: 30px;
+        }
+        .content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .content h2 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .search-form {
+            margin-bottom: 20px;
+        }
+        .search-form input[type="text"] {
+            padding: 8px;
+            width: 300px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .search-form button {
+            padding: 8px 16px;
+            background-color: #4ecdc4;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .search-form button:hover {
+            background-color: #45b7d1;
+        }
+        .card {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .card h4 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+        .card p {
+            margin: 5px 0;
+            color: #555;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 20px;
+            background-color: #4ecdc4;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .btn:hover {
+            background-color: #45b7d1;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <h2>All Patient Details</h2>
+
+        <!-- Search Form -->
+        <form class="search-form" method="GET" action="{{ url_for('patient_details') }}">
+            <input type="text" name="search" placeholder="Search by patient name..." value="{{ request.args.get('search', '') }}">
+            <button type="submit">Search</button>
+        </form>
+
+        {% if patients %}
+            {% for patient in patients %}
+            <div class="card">
+                <h4>{{ patient.name }}</h4>
+                <p><strong>Age:</strong> {{ patient.age }}</p>
+                <p><strong>Gender:</strong> {{ patient.gender }}</p>
+                <p><strong>Chronic Disease:</strong> {{ patient.chronic_disease }}</p>
+                <p><strong>Smoker:</strong> {{ patient.smoker }}</p>
+                <p><strong>Number of Medications:</strong> {{ patient.num_medications }}</p>
+                <p><strong>Previous Admissions:</strong> {{ patient.prev_admissions }}</p>
+                <p><strong>BMI:</strong> {{ patient.bmi }}</p>
+                <p><strong>Days Since Last Admission:</strong> {{ patient.days_since_last }}</p>
+                <p><strong>Predicted Risk:</strong> {{ patient.predicted_risk }}</p>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>No patients found.</p>
+        {% endif %}
+
+        <a href="{{ url_for('dashboard') }}" class="btn">Back to Dashboard</a>
+    </div>
+</body>
+</html>

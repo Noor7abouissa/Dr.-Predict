@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Patient Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f5f7f5;
+            display: flex;
+            height: 100vh;
+        }
+        .logo{
+            height: 150px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+        .icons{
+            height: 60px;
+            border-radius: 50%;
+        }
+
+        .sidebar {
+            width: 400px;
+            background-color: #cad1b0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .sidebar h4 {
+            margin: 10px 0;
+            font-size: 18px;
+            color: #333;
+        }
+        .sidebar a {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            text-align: center;
+            text-decoration: none;
+            color: #555;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+        .sidebar a.active {
+            background-color: #c2d8d0;
+            color: #333;
+        }
+        .sidebar a:hover:not(.active) {
+            background-color: #c2d8d0;
+        }
+        .content {
+            flex: 1;
+            padding: 30px;
+            background-color: #f5f7f5;
+        }
+        .content h2 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .form {
+            max-width: 600px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            width: 200px;
+            font-size: 16px;
+            color: #333;
+        }
+        .form-group input[type="text"],
+        .form-group input[type="number"],
+        .form-group select {
+            flex: 1;
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            outline: none;
+        }
+        .form-group input[type="number"] {
+            width: 100px;
+        }
+        .form-group select {
+            appearance: none;
+            background: url('data:image/svg+xml;utf8,<svg fill="gray" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right 8px center;
+            background-size: 20px;
+        }
+        .smoker-group {
+        display: flex;
+        gap: 20px;
+        flex: 1;
+        }
+        .smoker-group label {
+        flex: 1;
+        text-align: center;
+        padding: 8px 0;
+        border: 2px solid #ddd;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        color: #555;
+        background-color: #fff;
+        }
+        .smoker-group input[type="radio"] {
+        display: none;
+        }
+        .smoker-group input[type="radio"]:checked + label {
+        background-color: #c2d8d0;
+        border-color: #4ecdc4;
+        color: #333;
+        }
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            margin-left: 200px;
+        }
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn-predict {
+            background-color: #f4c430;
+            color: #333;
+        }
+        .btn-predict:hover {
+            background-color: #e0b028;
+        }
+        .btn-save {
+            background-color: #4ecdc4;
+            color: #fff;
+        }
+        .btn-save:hover {
+            background-color: #45b7d1;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .result h3 {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .result p {
+            font-size: 16px;
+            color: #555;
+        }
+        .alert {
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .alert-warning {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #4ecdc4;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <img src="{{ url_for('static', filename='images/docter.png') }}" class="logo" alt="Doctor Image">
+        <h4>Dr. {{ user_name }}</h4>
+        <img src="{{ url_for('static', filename='images/home.png') }}" class="icons" alt="Doctor Image">
+        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        <img src="{{ url_for('static', filename='images/graph.png') }}" class="icons" alt="Doctor Image">
+        <a href="{{ url_for('predict') }}" class="active">Prediction</a>
+        <img src="{{ url_for('static', filename='images/user.png') }}" class="icons" alt="Doctor Image">
+        <a href="{{ url_for('patient_details') }}">My Patient</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <h2>Patient Info Form</h2>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Prediction Form -->
+        <form class="form" method="POST" action="{{ url_for('predict') }}">
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" name="patient_name" required>
+            </div>
+
+            <div class="form-group">
+                <label>Age</label>
+                <input type="number" name="age" required min="0">
+            </div>
+
+            <div class="form-group">
+                <label>Gender</label>
+                <select name="gender" required>
+                    <option value="Female">Male</option>
+                    <option value="Male">Female</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Diagnosis</label>
+                <select name="chronic_disease" required>
+                    <option value="No Chronic Disease">No Chronic Disease</option>
+                    <option value="Heart Disease">Heart Disease</option>
+                    <option value="Diabetes">Diabetes</option>
+                    <option value="Hypertension">Hypertension</option>
+                </select>
+            </div>
+
+            
+            <div class="form-group">
+                <label>Number of Medications</label>
+                <input type="number" name="num_medications" required min="0">
+            </div>
+            
+            <div class="form-group">
+                <label>Previous Addmisions</label>
+                <input type="number" name="prev_admissions" required min="0">
+            </div>
+
+            <div class="form-group">
+                <label>Days Since Last Addmission</label>
+                <input type="number" name="days_since_last" required min="0">
+            </div>
+            
+            <div class="form-group">
+                <label>BMI</label>
+                <input type="number" step="0.1" name="bmi" required min="0">
+            </div>
+
+            <div class="form-group">
+                <label>Smoker</label>
+                <div class="smoker-group">
+                    <input type="radio" id="smoker-yes" name="smoker" value="Yes" required>
+                    <label for="smoker-yes">Smoker</label>
+                    <input type="radio" id="smoker-no" name="smoker" value="No">
+                    <label for="smoker-no">Non-Smoker</label>
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button type="submit" class="btn btn-predict">Predict Risk Score</button>
+                
+            </div>
+        </form>
+
+        <!-- Prediction Result -->
+        {% if prediction_result %}
+            <div class="result">
+                <h3>Prediction Result:</h3>
+                <p><strong>{{ prediction_result }}</strong></p>
+            </div>
+        {% endif %}
+
+        <a href="{{ url_for('dashboard') }}" class="back-link">Back to Dashboard</a>
+    </div>
+</body>
+</html>
