@@ -3,6 +3,7 @@ Dr. Predict 🩺
 Dr. Predict is a predictive analytics web application designed to help healthcare providers identify patients at high risk of hospital readmission within 30 days of discharge. The system uses machine learning to generate a personalized risk score based on patient information.
 
 🔍 Project Overview
+
 🎯 Goal: Reduce unnecessary hospital readmissions through early prediction.
 
 💡 Solution: Use ML models trained on patient data to calculate a risk score and provide follow-up recommendations.
@@ -60,6 +61,9 @@ requirements.txt – List of Python packages
 This is a prototype version of the system. No real patient data is used. The system is not yet integrated with real hospital EHRs
 
 📬 Contact
+
 Developed by: Noor Abouissa
+
 Supervised by: Dr. Nasriah
+
 University: Almaarefa University – Health Informatics Department
