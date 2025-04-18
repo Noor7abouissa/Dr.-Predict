@@ -1,4 +1,5 @@
 Dr. Predict 🩺
+
 Dr. Predict is a predictive analytics web application designed to help healthcare providers identify patients at high risk of hospital readmission within 30 days of discharge. The system uses machine learning to generate a personalized risk score based on patient information.
 
 🔍 Project Overview
