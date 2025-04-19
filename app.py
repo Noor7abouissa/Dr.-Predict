@@ -1,18 +1,16 @@
 from flask import Flask, render_template, request, redirect, url_for, session, json, jsonify, make_response, flash 
 from datetime import datetime, date
-import mysql.connector
+import psycopg2
 from werkzeug.security import generate_password_hash, check_password_hash
 import joblib
+import mysql.connector
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import LabelEncoder
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
-
-
-
+# load_dotenv() # This code is in case you want to load the .env file
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -24,16 +22,18 @@ scaler = joblib.load('models/scaler.pkl')
 le = joblib.load('models/label_encoder.pkl')
 
 # Database connection | Don't use it if you are deploying online use something else for this 
-# conn = mysql.connector.connect(host='localhost', user='root', password='', database='progrex_rex')
-# cursor = conn.cursor()
+conn = mysql.connector.connect(host='localhost', user='root', password='', database='progrex_rex')
+cursor = conn.cursor()
 
 # Database connection for render.com
-conn = mysql.connector.connect(
-    host=os.environ.get("DB_HOST"),
-    user=os.environ.get("DB_USER"),
-    password=os.environ.get("DB_PASSWORD"),
-    database=os.environ.get("DB_NAME")
-)
+# conn = psycopg2.connect(
+#     host=os.environ.get("DB_HOST"),
+#     user=os.environ.get("DB_USER"),
+#     password=os.environ.get("DB_PASSWORD"),
+#     database=os.environ.get("DB_NAME"),
+#     port=os.environ.get("DB_PORT", 5432)  # Default PostgreSQL port
+# )
+# cursor = conn.cursor()
 
 @app.route('/')
 def login():
