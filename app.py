@@ -6,6 +6,13 @@ import joblib
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import LabelEncoder
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+
+
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -16,9 +23,17 @@ svm_model = joblib.load('models/svm_model.pkl')
 scaler = joblib.load('models/scaler.pkl')
 le = joblib.load('models/label_encoder.pkl')
 
-# Database connection
-conn = mysql.connector.connect(host='localhost', user='root', password='', database='progrex_rex')
-cursor = conn.cursor()
+# Database connection | Don't use it if you are deploying online use something else for this 
+# conn = mysql.connector.connect(host='localhost', user='root', password='', database='progrex_rex')
+# cursor = conn.cursor()
+
+# Database connection for render.com
+conn = mysql.connector.connect(
+    host=os.getenv("sql207.infinityfree.com"),
+    user=os.getenv("if0_38786182"),
+    password=os.getenv("Nooooor20037"),
+    database=os.getenv("if0_38786182_XXX")
+)
 
 @app.route('/')
 def login():
