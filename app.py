@@ -29,10 +29,10 @@ le = joblib.load('models/label_encoder.pkl')
 
 # Database connection for render.com
 conn = mysql.connector.connect(
-    host=os.getenv("sql207.infinityfree.com"),
-    user=os.getenv("if0_38786182"),
-    password=os.getenv("Nooooor20037"),
-    database=os.getenv("if0_38786182_XXX")
+    host=os.environ.get("DB_HOST"),
+    user=os.environ.get("DB_USER"),
+    password=os.environ.get("DB_PASSWORD"),
+    database=os.environ.get("DB_NAME")
 )
 
 @app.route('/')
