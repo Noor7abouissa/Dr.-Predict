@@ -62,6 +62,8 @@ This is a prototype version of the system. No real patient data is used. The sys
 
 📬 Contact
 
+Reference Study:https://smj.org.sa/content/46/3/261
+
 Developed by: Noor Abouissa
 
 Supervised by: Dr. Nasriah
